@@ -6,6 +6,10 @@ using namespace std;
 class Solution {
 public:
     int threeSumClosest(vector<int>& nums, int target) {
+        ios_base::sync_with_stdio(0);
+        cin.tie(0);
+        cout.tie(0);
+
         sort(nums.begin(), nums.end());
         int ans = nums[0] + nums[1] + nums[2];
 
