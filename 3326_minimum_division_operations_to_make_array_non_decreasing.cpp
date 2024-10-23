@@ -1,10 +1,13 @@
 #include<iostream>
 #include<vector>
 #include<algorithm>
+#include<unordered_map>
 using namespace std;
 
 class Solution {
 public:
+    unordered_map<int, int> umap;
+
     int minOperations(vector<int>& nums) {
         ios_base::sync_with_stdio(0);
         cin.tie(0);
@@ -26,8 +29,12 @@ public:
     int find_largest_factor(int num) {
         if (num % 2 == 0) return num / 2;
 
+        if (umap.count(num)) return umap[num];
+
         for (int i = 3; i <= sqrt(num); i += 2) {
-            if (num % i == 0) return num / i;
+            if (num % i == 0) {   
+                return umap[num] = num / i;
+            }
         }
 
         return -1;
