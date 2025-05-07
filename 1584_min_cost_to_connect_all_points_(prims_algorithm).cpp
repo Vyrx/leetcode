@@ -8,8 +8,8 @@ using namespace std;
 class Solution {
 public:
     struct Edges {
-        int u, v, weight;
-        Edges(int u, int v, int weight) : u(u), v(v), weight(weight) {};
+        int u, weight; // only store the vertex thats not visited
+        Edges(int u, int weight) : u(u), weight(weight) {};
     };
 
     struct compEdges {
@@ -39,23 +39,24 @@ public:
         visited[0] = true;
         num_visited++;
         for (int i = 1; i < n; i++) {
-            pq.push(Edges(0, i, getManhattanDist(points[0][0], points[0][1], points[i][0], points[i][1])));
+            pq.push(Edges(i, getManhattanDist(points[0][0], points[0][1], points[i][0], points[i][1])));
         }
 
         while (num_visited < n) {
             Edges cur_edge = pq.top();
             pq.pop();
-            if (!visited[cur_edge.u] || !visited[cur_edge.v]) { // if one of the points is not visited
-                int cur_point = visited[cur_edge.u] ? cur_edge.v : cur_edge.u; // get the not visited point
+            if (!visited[cur_edge.u]) { // if the point isnt visited yet
+                visited[cur_edge.u] = true;
+
                 // Add all non visited neighbors to the pq
                 for (int i = 0; i < n; i++) {
-                    if (!visited[i] && i != cur_point) {
-                        pq.push(Edges(cur_point, i, getManhattanDist(points[cur_point][0], points[cur_point][1], points[i][0], points[i][1])));
+                    if (!visited[i]) {
+                        pq.push(Edges(i, getManhattanDist(points[cur_edge.u][0], points[cur_edge.u][1], points[i][0], points[i][1])));
                     }
                 }
                 total_cost += cur_edge.weight;
                 num_visited++;
-                visited[cur_point] = true;
+                
             }
         }
         return total_cost;
